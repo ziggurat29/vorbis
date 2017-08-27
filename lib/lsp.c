@@ -247,7 +247,7 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
 void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
                             float amp,float ampoffset){
   int i;
-  float wdel=M_PI/ln;
+  float wdel=M_PI_F/ln;
   for(i=0;i<m;i++)lsp[i]=2.f*cosf(lsp[i]);
 
   i=0;
@@ -272,7 +272,7 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
       q*=q*(2.f+w);
     }
 
-    q=(float)fromdB(amp/sqrtf(p+q)-ampoffset);
+    q=(float)fromdB((FPTYPE)(amp/sqrtf(p+q)-ampoffset));
 
     curve[i]*=q;
     while(map[++i]==k)curve[i]*=q;
@@ -341,7 +341,7 @@ static int Laguerre_With_Deflation(float *a,int ord,float *r){
       delta  = m*p/denom;
       new   -= delta;
 
-      if(delta<0.f)delta*=-1;
+      if(delta<FPCONST(0.))delta*=-1;
 
       if(FPFXN(fabs)(delta/new)<FPCONST(10e-12))break;
     }
@@ -367,7 +367,7 @@ static int Newton_Raphson(float *a,int ord,float *r){
 
   for(i=0; i<ord;i++) root[i] = r[i];
 
-  while(error>1e-20){
+  while(error>FPCONST(1e-20)){
     error=0;
 
     for(i=0; i<ord; i++) { /* Update each point. */
@@ -377,7 +377,7 @@ static int Newton_Raphson(float *a,int ord,float *r){
       for(k=ord-1; k>= 0; k--) {
 
         pp= pp* rooti + p;
-        p = p * rooti + a[k];
+        p = p * rooti + (FPTYPE)a[k];
       }
 
       delta = p/pp;

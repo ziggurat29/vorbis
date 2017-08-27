@@ -461,7 +461,7 @@ static int fit_line(lsfit_acc *a,int fits,int *y0,int *y1,
   int x1=a[fits-1].x1;
 
   for(i=0;i<fits;i++){
-    FPTYPE weight = (a[i].bn+a[i].an)*info->twofitweight/(a[i].an+1)+FPCONST(1.0);
+    FPTYPE weight = (FPTYPE)(a[i].bn+a[i].an)*(FPTYPE)info->twofitweight/(a[i].an+1)+FPCONST(1.0);
 
     xb+=a[i].xb + a[i].xa * weight;
     yb+=a[i].yb + a[i].ya * weight;

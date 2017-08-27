@@ -37,20 +37,23 @@
 #  endif
 
 #ifdef DJGPP
-#  ifdef USE_DBL_PREC
+#  if VORBIS_DBL_PREC
 #    define rint(x)   (floor((x)+0.5))
 #  else
 #    define rintf(x)   (floorf((x)+0.5f))
 #  endif
 #endif
 
-#ifndef M_PI
-#  define M_PI (3.1415926536f)
+#if defined(M_PI)
+#undef M_PI
 #endif
+#define M_PI_F (3.1415926536f)
+#define M_PI_D (3.14159265358979323846)
+#define M_PI_X (FPCONST(3.14159265358979323846))
 
 #if defined(_WIN32) && !defined(__SYMBIAN32__)
 #  include <malloc.h>
-#  ifdef USE_DBL_PREC
+#  if VORBIS_DBL_PREC
 #    define rint(x)   (floor((x)+0.5))
 #  else
 #    define rintf(x)   (floorf((x)+0.5f))
@@ -182,7 +185,7 @@ static __inline void vorbis_fpu_restore(vorbis_fpu_control fpu){
 
 typedef int vorbis_fpu_control;
 
-#  ifdef USE_DBL_PREC
+#  if VORBIS_DBL_PREC
 static inline int vorbis_ftoi(double f){
 	/* Note: MSVC and GCC (at least on some systems) round towards zero, thus,
 	the floor() call is required to ensure correct rounding of

@@ -69,7 +69,7 @@ float vorbis_lpc_from_data(float *data,float *lpci,int n,int m){
   j=m+1;
   while(j--){
     FPTYPE d=0; /* double needed for accumulator depth */
-    for(i=j;i<n;i++)d+=(FPTYPE)data[i]*data[i-j];
+    for(i=j;i<n;i++)d+=(FPTYPE)data[i]*(FPTYPE)data[i-j];
     aut[j]=d;
   }
 

@@ -63,14 +63,14 @@ void mdct_init(mdct_lookup *lookup,int n){
 /* trig lookups... */
 
   for(i=0;i<n/4;i++){
-    T[i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/n)*(4*i)));
-    T[i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI/n)*(4*i)));
-    T[n2+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/(2*n))*(2*i+1)));
-    T[n2+i*2+1]= (DATA_TYPE)FLOAT_CONV(FPFXN(sin)((M_PI/(2*n))*(2*i+1)));
+    T[i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI_X/n)*(4*i)));
+    T[i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI_X/n)*(4*i)));
+    T[n2+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI_X/(2*n))*(2*i+1)));
+    T[n2+i*2+1]= (DATA_TYPE)FLOAT_CONV(FPFXN(sin)((M_PI_X/(2*n))*(2*i+1)));
   }
   for(i=0;i<n/8;i++){
-    T[n+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/n)*(4*i+2))*FPCONST(.5));
-    T[n+i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI/n)*(4*i+2))*FPCONST(.5));
+    T[n+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI_X/n)*(4*i+2))*FPCONST(.5));
+    T[n+i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI_X/n)*(4*i+2))*FPCONST(.5));
   }
 
   /* bitreverse lookup... */

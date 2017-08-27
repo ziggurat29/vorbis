@@ -44,7 +44,7 @@ void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
   mdct_init(&e->mdct,n);
 
   for(i=0;i<n;i++){
-    e->mdct_win[i]=sinf(i/(n-1.f)*M_PI);
+    e->mdct_win[i]=sinf(i/(n-1.f)*M_PI_F);
     e->mdct_win[i]*=e->mdct_win[i];
   }
 
@@ -61,7 +61,7 @@ void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
     n=e->band[j].end;
     e->band[j].window=_ogg_malloc(n*sizeof(*e->band[0].window));
     for(i=0;i<n;i++){
-      e->band[j].window[i]=sinf((i+.5f)/n*M_PI);
+      e->band[j].window[i]=sinf((i+.5f)/n*M_PI_F);
       e->band[j].total+=e->band[j].window[i];
     }
     e->band[j].total=1.f/e->band[j].total;
@@ -138,7 +138,7 @@ static int _ve_amp(envelope_lookup *ve,
     filters->nearDC_acc-=filters->nearDC[ptr];
     filters->nearDC[ptr]=temp;
 
-    decay*=(1./(VE_NEARDC+1));
+    decay*=(1.f/(VE_NEARDC+1));
     filters->nearptr++;
     if(filters->nearptr>=VE_NEARDC)filters->nearptr=0;
     decay=todB(&decay)*.5f-15.f;
@@ -153,7 +153,7 @@ static int _ve_amp(envelope_lookup *ve,
     if(val<decay)val=decay;
     if(val<minV)val=minV;
     vec[i>>1]=val;
-    decay-=8.;
+    decay-=8.f;
   }
 
   /*_analysis_output_always("spread",seq2++,vec,n/4,0,0,0);*/

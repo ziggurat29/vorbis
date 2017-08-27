@@ -11,8 +11,8 @@
  ********************************************************************/
 
 #define HEAD_ALIGN 32
-#ifdef _MSC_VER
-//XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
 #include <pthread.h>
 #endif
@@ -75,12 +75,12 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 
 	return 0;
 }
-#elif
+#else
 #include <sys/time.h>
 #endif
 
-#ifdef _MSC_VER
- //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
 static pthread_mutex_t memlock=PTHREAD_MUTEX_INITIALIZER;
 #endif
@@ -112,8 +112,8 @@ static void *_insert(void *ptr,long bytes,char *file,long line){
   ((head *)ptr)->ptr=pinsert;
   ((head *)ptr)->bytes=bytes-HEAD_ALIGN;
 
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_lock(&memlock);
 #endif
@@ -184,8 +184,8 @@ static void *_insert(void *ptr,long bytes,char *file,long line){
 
   global_bytes+=(bytes-HEAD_ALIGN);
 
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_unlock(&memlock);
 #endif
@@ -194,8 +194,8 @@ static void *_insert(void *ptr,long bytes,char *file,long line){
 
 static void _ripremove(void *ptr){
   int insert;
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_lock(&memlock);
 #endif
@@ -249,8 +249,8 @@ static void _ripremove(void *ptr){
   }
 
   pointers[insert]=NULL;
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_unlock(&memlock);
 #endif
@@ -258,8 +258,8 @@ static void _ripremove(void *ptr){
 
 void _VDBG_dump(void){
   int i;
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_lock(&memlock);
 #endif
@@ -270,8 +270,8 @@ void _VDBG_dump(void){
               ptr->file,ptr->line);
   }
 
-#ifdef _MSC_VER
-  //XXX windows (at least msvc) does not have pthreads
+#if defined(_MSC_VER) || defined(STM32F405xx)
+//windows (at least msvc) and the libraries for STM32F4 do not have pthreads
 #else
   pthread_mutex_unlock(&memlock);
 #endif

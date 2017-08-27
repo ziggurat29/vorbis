@@ -75,7 +75,7 @@ static float unitnorm(float x){
 
    all f in Hz, z in Bark */
 
-#define toBARK(n)   (FPCONST(13.1)*FPFXN(atan)(FPCONST(.00074)*(n))+FPCONST(2.24)*FPFXN(atan)((n)*(n)*FPCONST(1.85e-8))+FPCONST(1e-4)*(n))
+#define toBARK(n)   (FPCONST(13.1)*FPFXN(atan)(FPCONST(.00074)*((FPTYPE)n))+FPCONST(2.24)*FPFXN(atan)(((FPTYPE)n)*((FPTYPE)n)*FPCONST(1.85e-8))+FPCONST(1e-4)*((FPTYPE)n))
 #define fromBARK(z) (102.f*(z)-2.f*pow(z,2.f)+.4f*pow(z,3.f)+pow(1.46f,z)-1.f)
 #define toMEL(n)    (log(1.f+(n)*.001f)*1442.695f)
 #define fromMEL(m)  (1000.f*exp((m)/1442.695f)-1000.f)

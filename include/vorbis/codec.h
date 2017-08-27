@@ -24,9 +24,13 @@ extern "C"
 
 #include <ogg/ogg.h>
 
-//XXX allow me to switch between precision types easily
-//#define USE_DBL_PREC
-#ifdef USE_DBL_PREC
+//#define VORBIS_DBL_PREC 0
+//you can define VORBIS_DBL_PREC to 0 to build a single-precision-only
+//implementation.  The default in absence of such a definition is double.
+#ifndef VORBIS_DBL_PREC
+#define VORBIS_DBL_PREC 1
+#endif
+#if VORBIS_DBL_PREC
 #define FPCONST(a) (a)
 #define FPTYPE double
 #define FPFXN(a) a

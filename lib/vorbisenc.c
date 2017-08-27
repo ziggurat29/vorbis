@@ -244,8 +244,8 @@ static void vorbis_encode_global_psych_setup(vorbis_info *vi,FPTYPE s,
 
   /* interpolate the trigger threshholds */
   for(i=0;i<4;i++){
-    g->preecho_thresh[i]=(float)(in[is].preecho_thresh[i]*(1.f-ds)+in[is+1].preecho_thresh[i]*ds);
-    g->postecho_thresh[i]= (float)(in[is].postecho_thresh[i]*(1.f-ds)+in[is+1].postecho_thresh[i]*ds);
+    g->preecho_thresh[i]=in[is].preecho_thresh[i]*(1.f-(float)ds)+in[is+1].preecho_thresh[i]*(float)ds;
+    g->postecho_thresh[i]=in[is].postecho_thresh[i]*(1.f-(float)ds)+in[is+1].postecho_thresh[i]*(float)ds;
   }
   g->ampmax_att_per_sec = (float) ci->hi.amplitude_track_dBpersec;
   return;
@@ -341,16 +341,16 @@ static void vorbis_encode_tonemask_setup(vorbis_info *vi,FPTYPE s,int block,
 
   /* 0 and 2 are only used by bitmanagement, but there's no harm to always
      filling the values in here */
-  p->tone_masteratt[0]= (float)(att[is].att[0]*(FPCONST(1.)-ds)+att[is+1].att[0]*ds);
-  p->tone_masteratt[1]= (float)(att[is].att[1]*(FPCONST(1.)-ds)+att[is+1].att[1]*ds);
-  p->tone_masteratt[2]= (float)(att[is].att[2]*(FPCONST(1.)-ds)+att[is+1].att[2]*ds);
-  p->tone_centerboost= (float)(att[is].boost*(FPCONST(1.)-ds)+att[is+1].boost*ds);
-  p->tone_decay= (float)(att[is].decay*(FPCONST(1.)-ds)+att[is+1].decay*ds);
+  p->tone_masteratt[0]= att[is].att[0]*(1.f-(float)ds)+att[is+1].att[0]*(float)ds;
+  p->tone_masteratt[1]= att[is].att[1]*(1.f-(float)ds)+att[is+1].att[1]*(float)ds;
+  p->tone_masteratt[2]= att[is].att[2]*(1.f-(float)ds)+att[is+1].att[2]*(float)ds;
+  p->tone_centerboost= att[is].boost*(1.f-(float)ds)+att[is+1].boost*(float)ds;
+  p->tone_decay= att[is].decay*(1.f-(float)ds)+att[is+1].decay*(float)ds;
 
-  p->max_curve_dB= (float)(max[is]*(FPCONST(1.)-ds)+max[is+1]*ds);
+  p->max_curve_dB= max[is]*(1.f-(float)ds)+max[is+1]*(float)ds;
 
   for(i=0;i<P_BANDS;i++)
-    p->toneatt[i]= (float)(in[is].block[i]*(FPCONST(1.)-ds)+in[is+1].block[i]*ds);
+    p->toneatt[i]= in[is].block[i]*(1.f-(float)ds)+in[is+1].block[i]*(float)ds;
   return;
 }
 

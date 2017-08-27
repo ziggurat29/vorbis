@@ -122,7 +122,7 @@ static void floor0_map_lazy_init(vorbis_block      *vb,
     /* we choose a scaling constant so that:
        floor(bark(rate/2-1)*C)=mapped-1
      floor(bark(rate/2)*C)=mapped */
-    float scale=(float)(look->ln/toBARK(info->rate/2.f));
+    float scale=(float)(look->ln/toBARK(info->rate/FPCONST(2.)));
 
     /* the mapping from a linear scale to a smaller bark scale is
        straightforward.  We do *not* make sure that the linear mapping
@@ -133,7 +133,7 @@ static void floor0_map_lazy_init(vorbis_block      *vb,
     look->linearmap[W]=_ogg_malloc((n+1)*sizeof(**look->linearmap));
     for(j=0;j<n;j++){
       int val=(int)FPFXN(floor)( toBARK((info->rate/FPCONST(2.))/n*j)
-                     *scale); /* bark numbers represent band edges */
+                     *(FPTYPE)scale); /* bark numbers represent band edges */
       if(val>=look->ln)val=look->ln-1; /* guard against the approximation */
       look->linearmap[W][j]=val;
     }
