@@ -28,7 +28,7 @@
 /* psychoacoustic setup ********************************************/
 #define P_BANDS 17      /* 62Hz to 16kHz */
 #define P_LEVELS 8      /* 30dB to 100dB */
-#define P_LEVEL_0 30.    /* 30 dB */
+#define P_LEVEL_0 30.f  /* 30 dB */
 #define P_NOISECURVES 3
 
 #define NOISE_COMPAND_LEVELS 40
@@ -59,7 +59,7 @@ typedef struct vorbis_info_psy{
   int normal_p;
   int normal_start;
   int normal_partition;
-  double normal_thresh;
+  FPTYPE normal_thresh;
 } vorbis_info_psy;
 
 typedef struct{

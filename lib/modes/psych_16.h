@@ -35,7 +35,7 @@ static const adj_stereo _psy_stereo_modes_16[4]={
    { 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99}},
 };
 
-static const double _psy_lowpass_16[4]={6.5,8,30.,99.};
+static const FPTYPE _psy_lowpass_16[4]={FPCONST(6.5),FPCONST(8.0),FPCONST(30.0),FPCONST(99.0)};
 
 static const att3 _psy_tone_masteratt_16[4]={
   {{ 30,  25,  12},  0,   0},  /* 0 */
@@ -118,7 +118,7 @@ static const noiseguard _psy_noiseguards_16[4]={
   {20,20,-1},
 };
 
-static const double _noise_thresh_16[4]={ .3,.5,.5,.5 };
+static const FPTYPE _noise_thresh_16[4]={ FPCONST(.3),FPCONST(.5),FPCONST(.5),FPCONST(.5) };
 
 static const int _noise_start_16[3]={ 256,256,9999 };
 static const int _noise_part_16[4]={ 8,8,8,8 };

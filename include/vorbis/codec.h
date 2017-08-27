@@ -24,6 +24,20 @@ extern "C"
 
 #include <ogg/ogg.h>
 
+//XXX allow me to switch between precision types easily
+#define USE_DBL_PREC
+#ifdef USE_DBL_PREC
+#define FPCONST(a) (a)
+#define FPTYPE double
+#define FPFXN(a) a
+#else
+#define FPCONST(a) (a##f)
+#define FPTYPE float
+#define FPFXN(a) a##f
+#endif
+
+
+
 typedef struct vorbis_info{
   int version;
   int channels;
@@ -175,7 +189,7 @@ extern void     vorbis_comment_clear(vorbis_comment *vc);
 extern int      vorbis_block_init(vorbis_dsp_state *v, vorbis_block *vb);
 extern int      vorbis_block_clear(vorbis_block *vb);
 extern void     vorbis_dsp_clear(vorbis_dsp_state *v);
-extern double   vorbis_granule_time(vorbis_dsp_state *v,
+extern FPTYPE   vorbis_granule_time(vorbis_dsp_state *v,
                                     ogg_int64_t granulepos);
 
 extern const char *vorbis_version_string(void);

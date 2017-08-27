@@ -35,19 +35,19 @@ static const int *_floor_mapping_16[]={
   _floor_mapping_16b
 };
 
-static const double rate_mapping_16[4]={
-  12000.,20000.,44000.,86000.
+static const FPTYPE rate_mapping_16[4]={
+  FPCONST(12000.0),FPCONST(20000.0),FPCONST(44000.0),FPCONST(86000.0)
 };
 
-static const double rate_mapping_16_uncoupled[4]={
-  16000.,28000.,64000.,100000.
+static const FPTYPE rate_mapping_16_uncoupled[4]={
+  FPCONST(16000.0),FPCONST(28000.0),FPCONST(64000.0),FPCONST(100000.0)
 };
 
-static const double _global_mapping_16[4]={ 1., 2., 3., 4. };
+static const FPTYPE _global_mapping_16[4]={ FPCONST(1.0), FPCONST(2.0), FPCONST(3.0), FPCONST(4.0) };
 
-static const double quality_mapping_16[4]={ -.1,.05,.5,1. };
+static const FPTYPE quality_mapping_16[4]={ FPCONST(-.1),FPCONST(.05),FPCONST(.5),FPCONST(1.0) };
 
-static const double _psy_compand_16_mapping[4]={ 0., .8, 1., 1.};
+static const FPTYPE _psy_compand_16_mapping[4]={ FPCONST(0.0), FPCONST(.8), FPCONST(1.0), FPCONST(1.0)};
 
 static const ve_setup_data_template ve_setup_16_stereo={
   3,

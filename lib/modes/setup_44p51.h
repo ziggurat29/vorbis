@@ -14,11 +14,11 @@
 
  ********************************************************************/
 
-#include "modes/residue_44p51.h"
+#include "residue_44p51.h"
 
-static const double rate_mapping_44p51[12]={
-  14000.,20000.,28000.,38000.,46000.,54000.,
-  75000.,96000.,120000.,140000.,180000.,240001.
+static const FPTYPE rate_mapping_44p51[12]={
+  FPCONST(14000.0),FPCONST(20000.0),FPCONST(28000.0),FPCONST(38000.0),FPCONST(46000.0),FPCONST(54000.0),
+  FPCONST(75000.0),FPCONST(96000.0),FPCONST(120000.0),FPCONST(140000.0),FPCONST(180000.0),FPCONST(240001.0)
 };
 
 static const ve_setup_data_template ve_setup_44_51={

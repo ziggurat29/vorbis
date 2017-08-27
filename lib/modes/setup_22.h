@@ -14,15 +14,15 @@
 
  ********************************************************************/
 
-static const double rate_mapping_22[4]={
-  15000.,20000.,44000.,86000.
+static const FPTYPE rate_mapping_22[4]={
+  FPCONST(15000.0),FPCONST(20000.0),FPCONST(44000.0),FPCONST(86000.0)
 };
 
-static const double rate_mapping_22_uncoupled[4]={
-  16000.,28000.,50000.,90000.
+static const FPTYPE rate_mapping_22_uncoupled[4]={
+  FPCONST(16000.0),FPCONST(28000.0),FPCONST(50000.0),FPCONST(90000.0)
 };
 
-static const double _psy_lowpass_22[4]={9.5,11.,30.,99.};
+static const FPTYPE _psy_lowpass_22[4]={FPCONST(9.5),FPCONST(11.0),FPCONST(30.0),FPCONST(99.0)};
 
 static const ve_setup_data_template ve_setup_22_stereo={
   3,

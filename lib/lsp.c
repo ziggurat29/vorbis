@@ -248,14 +248,14 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
                             float amp,float ampoffset){
   int i;
   float wdel=M_PI/ln;
-  for(i=0;i<m;i++)lsp[i]=2.f*cos(lsp[i]);
+  for(i=0;i<m;i++)lsp[i]=FPCONST(2.)*FPFXN(cos)(lsp[i]);
 
   i=0;
   while(i<n){
     int j,k=map[i];
     float p=.5f;
     float q=.5f;
-    float w=2.f*cos(wdel*k);
+    float w=FPCONST(2.)*FPFXN(cos)(wdel*k);
     for(j=1;j<m;j+=2){
       q *= w-lsp[j-1];
       p *= w-lsp[j];
@@ -272,7 +272,7 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
       q*=q*(2.f+w);
     }
 
-    q=fromdB(amp/sqrt(p+q)-ampoffset);
+    q=fromdB(amp/FPFXN(sqrt)(p+q)-ampoffset);
 
     curve[i]*=q;
     while(map[++i]==k)curve[i]*=q;
@@ -305,18 +305,18 @@ static int comp(const void *a,const void *b){
    Laguerre and later polish with Newton-Raphson (which can then
    afford to fail) */
 
-#define EPSILON 10e-7
+#define EPSILON FPCONST(10e-7)
 static int Laguerre_With_Deflation(float *a,int ord,float *r){
   int i,m;
-  double *defl=alloca(sizeof(*defl)*(ord+1));
+  FPTYPE *defl=alloca(sizeof(*defl)*(ord+1));
   for(i=0;i<=ord;i++)defl[i]=a[i];
 
   for(m=ord;m>0;m--){
-    double new=0.f,delta;
+    FPTYPE new=FPCONST(0.),delta;
 
     /* iterate a root */
     while(1){
-      double p=defl[m],pp=0.f,ppp=0.f,denom;
+      FPTYPE p=defl[m],pp=FPCONST(0.),ppp=FPCONST(0.),denom;
 
       /* eval the polynomial and its first two derivatives */
       for(i=m;i>0;i--){
@@ -331,10 +331,10 @@ static int Laguerre_With_Deflation(float *a,int ord,float *r){
         return(-1);  /* complex root!  The LPC generator handed us a bad filter */
 
       if(pp>0){
-        denom = pp + sqrt(denom);
+        denom = pp + FPFXN(sqrt)(denom);
         if(denom<EPSILON)denom=EPSILON;
       }else{
-        denom = pp - sqrt(denom);
+        denom = pp - FPFXN(sqrt)(denom);
         if(denom>-(EPSILON))denom=-(EPSILON);
       }
 
@@ -343,7 +343,7 @@ static int Laguerre_With_Deflation(float *a,int ord,float *r){
 
       if(delta<0.f)delta*=-1;
 
-      if(fabs(delta/new)<10e-12)break;
+      if(FPFXN(fabs)(delta/new)<FPCONST(10e-12))break;
     }
 
     r[m-1]=new;
@@ -362,8 +362,8 @@ static int Laguerre_With_Deflation(float *a,int ord,float *r){
 /* for spit-and-polish only */
 static int Newton_Raphson(float *a,int ord,float *r){
   int i, k, count=0;
-  double error=1.f;
-  double *root=alloca(ord*sizeof(*root));
+  FPTYPE error=FPCONST(1.);
+  FPTYPE *root=alloca(ord*sizeof(*root));
 
   for(i=0; i<ord;i++) root[i] = r[i];
 
@@ -371,9 +371,9 @@ static int Newton_Raphson(float *a,int ord,float *r){
     error=0;
 
     for(i=0; i<ord; i++) { /* Update each point. */
-      double pp=0.,delta;
-      double rooti=root[i];
-      double p=a[ord];
+      FPTYPE pp=FPCONST(0.0),delta;
+      FPTYPE rooti=root[i];
+      FPTYPE p=a[ord];
       for(k=ord-1; k>= 0; k--) {
 
         pp= pp* rooti + p;
@@ -445,9 +445,9 @@ int vorbis_lpc_to_lsp(float *lpc,float *lsp,int m){
   qsort(g2r,g2_order,sizeof(*g2r),comp);
 
   for(i=0;i<g1_order;i++)
-    lsp[i*2] = acos(g1r[i]);
+    lsp[i*2] = FPFXN(acos)(g1r[i]);
 
   for(i=0;i<g2_order;i++)
-    lsp[i*2+1] = acos(g2r[i]);
+    lsp[i*2+1] = FPFXN(acos)(g2r[i]);
   return(0);
 }

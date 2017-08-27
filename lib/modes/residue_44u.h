@@ -15,8 +15,8 @@
  ********************************************************************/
 
 #include "vorbis/codec.h"
-#include "backends.h"
-#include "books/uncoupled/res_books_uncoupled.h"
+#include "../backends.h"
+#include "../books/uncoupled/res_books_uncoupled.h"
 
 /***** residue backends *********************************************/
 

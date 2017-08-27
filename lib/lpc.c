@@ -51,6 +51,7 @@ Carsten Bormann
 #include "scales.h"
 #include "misc.h"
 
+
 /* Autocorrelation LPC coeff generation algorithm invented by
    N. Levinson in 1947, modified by J. Durbin in 1959. */
 
@@ -58,28 +59,28 @@ Carsten Bormann
    Output: m lpc coefficients, excitation energy */
 
 float vorbis_lpc_from_data(float *data,float *lpci,int n,int m){
-  double *aut=alloca(sizeof(*aut)*(m+1));
-  double *lpc=alloca(sizeof(*lpc)*(m));
-  double error;
-  double epsilon;
+  FPTYPE *aut=alloca(sizeof(*aut)*(m+1));
+  FPTYPE *lpc=alloca(sizeof(*lpc)*(m));
+  FPTYPE error;
+  FPTYPE epsilon;
   int i,j;
 
   /* autocorrelation, p+1 lag coefficients */
   j=m+1;
   while(j--){
-    double d=0; /* double needed for accumulator depth */
-    for(i=j;i<n;i++)d+=(double)data[i]*data[i-j];
+    FPTYPE d=0; /* double needed for accumulator depth */
+    for(i=j;i<n;i++)d+=(FPTYPE)data[i]*data[i-j];
     aut[j]=d;
   }
 
   /* Generate lpc coefficients from autocorr values */
 
   /* set our noise floor to about -100dB */
-  error=aut[0] * (1. + 1e-10);
-  epsilon=1e-9*aut[0]+1e-10;
+  error = aut[0] * (FPCONST(1.) + FPCONST(1e-10));
+  epsilon = FPCONST(1e-9)*aut[0] + FPCONST(1e-10);
 
   for(i=0;i<m;i++){
-    double r= -aut[i+1];
+    FPTYPE r= -aut[i+1];
 
     if(error<epsilon){
       memset(lpc+i,0,(m-i)*sizeof(*lpc));
@@ -98,14 +99,14 @@ float vorbis_lpc_from_data(float *data,float *lpci,int n,int m){
 
     lpc[i]=r;
     for(j=0;j<i/2;j++){
-      double tmp=lpc[j];
+      FPTYPE tmp=lpc[j];
 
       lpc[j]+=r*lpc[i-1-j];
       lpc[i-1-j]+=r*tmp;
     }
     if(i&1)lpc[j]+=lpc[j]*r;
 
-    error*=1.-r*r;
+    error*= FPCONST(1.)-r*r;
 
   }
 
@@ -113,8 +114,8 @@ float vorbis_lpc_from_data(float *data,float *lpci,int n,int m){
 
   /* slightly damp the filter */
   {
-    double g = .99;
-    double damp = g;
+    FPTYPE g = FPCONST(.99);
+    FPTYPE damp = g;
     for(j=0;j<m;j++){
       lpc[j]*=damp;
       damp*=g;
@@ -126,7 +127,7 @@ float vorbis_lpc_from_data(float *data,float *lpci,int n,int m){
   /* we need the error value to know how big an impulse to hit the
      filter with later */
 
-  return error;
+  return (float)error;
 }
 
 void vorbis_lpc_predict(float *coeff,float *prime,int m,

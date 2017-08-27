@@ -14,9 +14,9 @@
 
  ********************************************************************/
 
-static const double rate_mapping_X[12]={
-  -1.,-1.,-1.,-1.,-1.,-1.,
-  -1.,-1.,-1.,-1.,-1.,-1.
+static const FPTYPE rate_mapping_X[12]={
+  FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),
+  FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0),FPCONST(-1.0)
 };
 
 static const ve_setup_data_template ve_setup_X_stereo={

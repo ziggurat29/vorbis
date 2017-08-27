@@ -14,17 +14,17 @@
 
  ********************************************************************/
 
-#include "modes/floor_all.h"
-#include "modes/residue_44.h"
-#include "modes/psych_44.h"
+#include "floor_all.h"
+#include "residue_44.h"
+#include "psych_44.h"
 
-static const double rate_mapping_44_stereo[12]={
-  22500.,32000.,40000.,48000.,56000.,64000.,
-  80000.,96000.,112000.,128000.,160000.,250001.
+static const FPTYPE rate_mapping_44_stereo[12]={
+  FPCONST(22500.0),FPCONST(32000.0),FPCONST(40000.0),FPCONST(48000.0),FPCONST(56000.0),FPCONST(64000.0),
+  FPCONST(80000.0),FPCONST(96000.0),FPCONST(112000.0),FPCONST(128000.0),FPCONST(160000.0),FPCONST(250001.0)
 };
 
-static const double quality_mapping_44[12]={
-  -.1,.0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0
+static const FPTYPE quality_mapping_44[12]={
+  FPCONST(-.1),FPCONST(.0),FPCONST(.1),FPCONST(.2),FPCONST(.3),FPCONST(.4),FPCONST(.5),FPCONST(.6),FPCONST(.7),FPCONST(.8),FPCONST(.9),FPCONST(1.0)
 };
 
 static const int blocksize_short_44[11]={
@@ -34,16 +34,16 @@ static const int blocksize_long_44[11]={
   4096,2048,2048,2048,2048,2048,2048,2048,2048,2048,2048
 };
 
-static const double _psy_compand_short_mapping[12]={
-  0.5, 1., 1., 1.3, 1.6, 2., 2., 2., 2., 2., 2., 2.
+static const FPTYPE _psy_compand_short_mapping[12]={
+  FPCONST(0.5), FPCONST(1.0), FPCONST(1.0), FPCONST(1.3), FPCONST(1.6), FPCONST(2.0), FPCONST(2.0), FPCONST(2.0), FPCONST(2.0), FPCONST(2.0), FPCONST(2.0), FPCONST(2.0)
 };
-static const double _psy_compand_long_mapping[12]={
-  3.5, 4., 4., 4.3, 4.6, 5., 5., 5., 5., 5., 5., 5.
+static const FPTYPE _psy_compand_long_mapping[12]={
+  FPCONST(3.5), FPCONST(4.0), FPCONST(4.0), FPCONST(4.3), FPCONST(4.6), FPCONST(5.0), FPCONST(5.0), FPCONST(5.0), FPCONST(5.0), FPCONST(5.0), FPCONST(5.0), FPCONST(5.0)
 };
 
-static const double _global_mapping_44[12]={
+static const FPTYPE _global_mapping_44[12]={
   /* 1., 1., 1.5, 2., 2., 2.5, 2.7, 3.0, 3.5, 4., 4. */
- 0., 1., 1., 1.5, 2., 2., 2.5, 2.7, 3.0, 3.7, 4., 4.
+ FPCONST(0.0), FPCONST(1.0), FPCONST(1.0), FPCONST(1.5), FPCONST(2.0), FPCONST(2.0), FPCONST(2.5), FPCONST(2.7), FPCONST(3.0), FPCONST(3.7), FPCONST(4.0), FPCONST(4.0)
 };
 
 static const int _floor_mapping_44a[11]={

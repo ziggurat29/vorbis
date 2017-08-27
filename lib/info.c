@@ -43,7 +43,7 @@ static void _v_writestring(oggpack_buffer *o,const char *s, int bytes){
 
 static void _v_readstring(oggpack_buffer *o,char *buf,int bytes){
   while(bytes--){
-    *buf++=oggpack_read(o,8);
+    *buf++=(char)oggpack_read(o,8);
   }
 }
 
@@ -658,18 +658,18 @@ int vorbis_analysis_headerout(vorbis_dsp_state *v,
   return(ret);
 }
 
-double vorbis_granule_time(vorbis_dsp_state *v,ogg_int64_t granulepos){
+FPTYPE vorbis_granule_time(vorbis_dsp_state *v,ogg_int64_t granulepos){
   if(granulepos == -1) return -1;
 
   /* We're not guaranteed a 64 bit unsigned type everywhere, so we
      have to put the unsigned granpo in a signed type. */
   if(granulepos>=0){
-    return((double)granulepos/v->vi->rate);
+    return((FPTYPE)granulepos/v->vi->rate);
   }else{
     ogg_int64_t granuleoff=0xffffffff;
     granuleoff<<=31;
     granuleoff|=0x7ffffffff;
-    return(((double)granulepos+2+granuleoff+granuleoff)/v->vi->rate);
+    return(((FPTYPE)granulepos+2+granuleoff+granuleoff)/v->vi->rate);
   }
 }
 

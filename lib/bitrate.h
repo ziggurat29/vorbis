@@ -32,7 +32,7 @@ typedef struct bitrate_manager_state {
   long           max_bitsper;
 
   long           short_per_long;
-  double         avgfloat;
+  FPTYPE         avgfloat;
 
   vorbis_block  *vb;
   int            choice;
@@ -43,9 +43,9 @@ typedef struct bitrate_manager_info{
   long           min_rate;
   long           max_rate;
   long           reservoir_bits;
-  double         reservoir_bias;
+  FPTYPE         reservoir_bias;
 
-  double         slew_damp;
+  FPTYPE         slew_damp;
 
 } bitrate_manager_info;
 

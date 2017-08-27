@@ -45,6 +45,7 @@
 #include "os.h"
 #include "misc.h"
 
+
 /* build lookups for trig functions; also pre-figure scaling and
    some window function algebra. */
 
@@ -54,7 +55,7 @@ void mdct_init(mdct_lookup *lookup,int n){
 
   int i;
   int n2=n>>1;
-  int log2n=lookup->log2n=rint(log((float)n)/log(2.f));
+  int log2n = lookup->log2n = (int) FPFXN(rint) (FPFXN(log)((FPTYPE)n) / FPFXN(log)(FPCONST(2.)) );
   lookup->n=n;
   lookup->trig=T;
   lookup->bitrev=bitrev;
@@ -62,20 +63,20 @@ void mdct_init(mdct_lookup *lookup,int n){
 /* trig lookups... */
 
   for(i=0;i<n/4;i++){
-    T[i*2]=FLOAT_CONV(cos((M_PI/n)*(4*i)));
-    T[i*2+1]=FLOAT_CONV(-sin((M_PI/n)*(4*i)));
-    T[n2+i*2]=FLOAT_CONV(cos((M_PI/(2*n))*(2*i+1)));
-    T[n2+i*2+1]=FLOAT_CONV(sin((M_PI/(2*n))*(2*i+1)));
+    T[i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/n)*(4*i)));
+    T[i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI/n)*(4*i)));
+    T[n2+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/(2*n))*(2*i+1)));
+    T[n2+i*2+1]= (DATA_TYPE)FLOAT_CONV(FPFXN(sin)((M_PI/(2*n))*(2*i+1)));
   }
   for(i=0;i<n/8;i++){
-    T[n+i*2]=FLOAT_CONV(cos((M_PI/n)*(4*i+2))*.5);
-    T[n+i*2+1]=FLOAT_CONV(-sin((M_PI/n)*(4*i+2))*.5);
+    T[n+i*2]= (DATA_TYPE)FLOAT_CONV(FPFXN(cos)((M_PI/n)*(4*i+2))*FPCONST(.5));
+    T[n+i*2+1]= (DATA_TYPE)FLOAT_CONV(-FPFXN(sin)((M_PI/n)*(4*i+2))*FPCONST(.5));
   }
 
   /* bitreverse lookup... */
 
   {
-    int mask=(1<<(log2n-1))-1,i,j;
+    int mask=(1<<(log2n-1))-1, /*i,*/ j;
     int msb=1<<(log2n-2);
     for(i=0;i<n/8;i++){
       int acc=0;
@@ -436,7 +437,7 @@ void mdct_backward(mdct_lookup *init, DATA_TYPE *in, DATA_TYPE *out){
   {
     DATA_TYPE *oX1=out+n2+n4;
     DATA_TYPE *oX2=out+n2+n4;
-    DATA_TYPE *iX =out;
+    /*DATA_TYPE **/iX =out;
     T             =init->trig+n2;
 
     do{

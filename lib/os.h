@@ -37,7 +37,11 @@
 #  endif
 
 #ifdef DJGPP
-#  define rint(x)   (floor((x)+0.5f))
+#  ifdef USE_DBL_PREC
+#    define rint(x)   (floor((x)+0.5))
+#  else
+#    define rintf(x)   (floorf((x)+0.5f))
+#  endif
 #endif
 
 #ifndef M_PI
@@ -46,7 +50,11 @@
 
 #if defined(_WIN32) && !defined(__SYMBIAN32__)
 #  include <malloc.h>
-#  define rint(x)   (floor((x)+0.5f))
+#  ifdef USE_DBL_PREC
+#    define rint(x)   (floor((x)+0.5))
+#  else
+#    define rintf(x)   (floorf((x)+0.5f))
+#  endif
 #  define NO_FLOAT_MATH_LIB
 #  define FAST_HYPOT(a, b) sqrt((a)*(a) + (b)*(b))
 #endif
@@ -174,12 +182,21 @@ static __inline void vorbis_fpu_restore(vorbis_fpu_control fpu){
 
 typedef int vorbis_fpu_control;
 
-static int vorbis_ftoi(double f){
-        /* Note: MSVC and GCC (at least on some systems) round towards zero, thus,
-           the floor() call is required to ensure correct roudning of
-           negative numbers */
-        return (int)floor(f+.5);
+#  ifdef USE_DBL_PREC
+static inline int vorbis_ftoi(double f){
+	/* Note: MSVC and GCC (at least on some systems) round towards zero, thus,
+	the floor() call is required to ensure correct rounding of
+	negative numbers */
+	return (int)floor(f+.5);
 }
+#  else
+static inline int vorbis_ftoi(float f) {
+	/* Note: MSVC and GCC (at least on some systems) round towards zero, thus,
+	the floor() call is required to ensure correct rounding of
+	negative numbers */
+	return (int)floorf(f + .5f);
+}
+#  endif
 
 /* We don't have special code for this compiler/arch, so do it the slow way */
 #  define vorbis_fpu_setround(vorbis_fpu_control) {}

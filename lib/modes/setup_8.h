@@ -29,21 +29,21 @@ static const int *_floor_mapping_8[]={
   _floor_mapping_8a
 };
 
-static const double rate_mapping_8[3]={
-  6000.,9000.,32000.,
+static const FPTYPE rate_mapping_8[3]={
+  FPCONST(6000.0),FPCONST(9000.0),FPCONST(32000.0),
 };
 
-static const double rate_mapping_8_uncoupled[3]={
-  8000.,14000.,42000.,
+static const FPTYPE rate_mapping_8_uncoupled[3]={
+  FPCONST(8000.0),FPCONST(14000.0),FPCONST(42000.0),
 };
 
-static const double quality_mapping_8[3]={
-  -.1,.0,1.
+static const FPTYPE quality_mapping_8[3]={
+  FPCONST(-.1),FPCONST(.0),FPCONST(1.0)
 };
 
-static const double _psy_compand_8_mapping[3]={ 0., 1., 1.};
+static const FPTYPE _psy_compand_8_mapping[3]={ FPCONST(0.0), FPCONST(1.0), FPCONST(1.0)};
 
-static const double _global_mapping_8[3]={ 1., 2., 3. };
+static const FPTYPE _global_mapping_8[3]={ FPCONST(1.0), FPCONST(2.0), FPCONST(3.0) };
 
 static const ve_setup_data_template ve_setup_8_stereo={
   2,

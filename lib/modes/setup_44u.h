@@ -14,11 +14,11 @@
 
  ********************************************************************/
 
-#include "modes/residue_44u.h"
+#include "residue_44u.h"
 
-static const double rate_mapping_44_un[12]={
-  32000.,48000.,60000.,70000.,80000.,86000.,
-  96000.,110000.,120000.,140000.,160000.,240001.
+static const FPTYPE rate_mapping_44_un[12]={
+  FPCONST(32000.0),FPCONST(48000.0),FPCONST(60000.0),FPCONST(70000.0),FPCONST(80000.0),FPCONST(86000.0),
+  FPCONST(96000.0),FPCONST(110000.0),FPCONST(120000.0),FPCONST(140000.0),FPCONST(160000.0),FPCONST(240001.0)
 };
 
 static const ve_setup_data_template ve_setup_44_uncoupled={

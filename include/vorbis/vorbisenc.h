@@ -239,7 +239,7 @@ struct ovectl_ratemanage_arg {
   long   bitrate_hard_max;
 /** the window period (in seconds) used to regulate the hard bitrate minimum
     and maximum*/
-  double bitrate_hard_window;
+  FPTYPE bitrate_hard_window;
 /** soft lower limit (in kilobits per second) below which the average bitrate
     tracker will start nudging the bitrate higher.*/
   long   bitrate_av_lo;
@@ -248,13 +248,13 @@ struct ovectl_ratemanage_arg {
   long   bitrate_av_hi;
 /** the window period (in seconds) used to regulate the average bitrate
     minimum and maximum.*/
-  double bitrate_av_window;
+  FPTYPE bitrate_av_window;
 /** Regulates the relative centering of the average and hard windows; in
     libvorbis 1.0 and 1.0.1, the hard window regulation overlapped but
     followed the average window regulation. In libvorbis 1.1 a bit-reservoir
     interface replaces the old windowing interface; the older windowing
     interface is simulated and this field has no effect.*/
-  double bitrate_av_window_center;
+  FPTYPE bitrate_av_window_center;
 };
 
 /**
@@ -278,14 +278,14 @@ struct ovectl_ratemanage2_arg {
  * buffers against future sudden drops in instantaneous bitrate. Default is
  * 0.1
  */
-  double bitrate_limit_reservoir_bias;
+  FPTYPE bitrate_limit_reservoir_bias;
 /** Average bitrate setting in kilobits per second */
   long   bitrate_average_kbps;
 /** Slew rate limit setting for average bitrate adjustment; sets the minimum
  *  time in seconds the bitrate tracker may swing from one extreme to the
  *  other when boosting or damping average bitrate.
  */
-  double bitrate_average_damping;
+  FPTYPE bitrate_average_damping;
 };
 
 
@@ -323,10 +323,10 @@ struct ovectl_ratemanage2_arg {
 #define OV_ECTL_RATEMANAGE2_SET      0x15
 
 /**
- * Returns the current encoder hard-lowpass setting (kHz) in the double
+ * Returns the current encoder hard-lowpass setting (kHz) in the FPTYPE
  * pointed to by arg.
  *
- * Argument: <tt>double *</tt>
+ * Argument: <tt>FPTYPE *</tt>
 */
 #define OV_ECTL_LOWPASS_GET          0x20
 
@@ -334,22 +334,22 @@ struct ovectl_ratemanage2_arg {
  *  Sets the encoder hard-lowpass to the value (kHz) pointed to by arg. Valid
  *  lowpass settings range from 2 to 99.
  *
- * Argument: <tt>double *</tt>
+ * Argument: <tt>FPTYPE *</tt>
 */
 #define OV_ECTL_LOWPASS_SET          0x21
 
 /**
- *  Returns the current encoder impulse block setting in the double pointed
+ *  Returns the current encoder impulse block setting in the FPTYPE pointed
  *  to by arg.
  *
- * Argument: <tt>double *</tt>
+ * Argument: <tt>FPTYPE *</tt>
 */
 #define OV_ECTL_IBLOCK_GET           0x30
 
 /**
  *  Sets the impulse block bias to the the value pointed to by arg.
  *
- * Argument: <tt>double *</tt>
+ * Argument: <tt>FPTYPE *</tt>
  *
  *  Valid range is -15.0 to 0.0 [default]. A negative impulse block bias will
  *  direct to encoder to use more bits when incoding short blocks that contain

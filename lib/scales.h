@@ -64,7 +64,7 @@ static float unitnorm(float x){
 
 #endif
 
-#define fromdB(x) (exp((x)*.11512925f))
+#define fromdB(x) (FPFXN(exp)((x)*FPCONST(.11512925)))
 
 /* The bark scale equations are approximations, since the original
    table was somewhat hand rolled.  The below are chosen to have the
@@ -75,7 +75,7 @@ static float unitnorm(float x){
 
    all f in Hz, z in Bark */
 
-#define toBARK(n)   (13.1f*atan(.00074f*(n))+2.24f*atan((n)*(n)*1.85e-8f)+1e-4f*(n))
+#define toBARK(n)   (FPCONST(13.1)*FPFXN(atan)(FPCONST(.00074)*(n))+FPCONST(2.24)*FPFXN(atan)((n)*(n)*FPCONST(1.85e-8))+FPCONST(1e-4)*(n))
 #define fromBARK(z) (102.f*(z)-2.f*pow(z,2.f)+.4f*pow(z,3.f)+pow(1.46f,z)-1.f)
 #define toMEL(n)    (log(1.f+(n)*.001f)*1442.695f)
 #define fromMEL(m)  (1000.f*exp((m)/1442.695f)-1000.f)
@@ -83,7 +83,10 @@ static float unitnorm(float x){
 /* Frequency to octave.  We arbitrarily declare 63.5 Hz to be octave
    0.0 */
 
+//XXX THESE ARE SENSITIVE TO BECOMING SINGLE PREC; FIND OUT WHY
 #define toOC(n)     (log(n)*1.442695f-5.965784f)
+//YYY #define toOC(n)     (logf(n)*1.442695f-5.965784f)
 #define fromOC(o)   (exp(((o)+5.965784f)*.693147f))
+//YYY #define fromOC(o)   (expf(((o)+5.965784f)*.693147f))
 
 #endif

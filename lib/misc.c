@@ -11,16 +11,79 @@
  ********************************************************************/
 
 #define HEAD_ALIGN 32
+#ifdef _MSC_VER
+//XXX windows (at least msvc) does not have pthreads
+#else
 #include <pthread.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "vorbis/codec.h"
 #define MISC_C
 #include "misc.h"
-#include <sys/time.h>
+#ifdef _MSC_VER
+#include <time.h>
+#include <windows.h>
 
+#define strdup _strdup
+
+#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+#else
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+#endif
+
+struct timezone
+{
+	int  tz_minuteswest; /* minutes W of Greenwich */
+	int  tz_dsttime;     /* type of dst correction */
+};
+
+int gettimeofday(struct timeval *tv, struct timezone *tz)
+{
+	FILETIME ft;
+	unsigned __int64 tmpres = 0;
+	static int tzflag = 0;
+
+	if (NULL != tv)
+	{
+		GetSystemTimeAsFileTime(&ft);
+
+		tmpres |= ft.dwHighDateTime;
+		tmpres <<= 32;
+		tmpres |= ft.dwLowDateTime;
+
+		tmpres /= 10;  /*convert into microseconds*/
+					   /*converting file time to unix epoch*/
+		tmpres -= DELTA_EPOCH_IN_MICROSECS;
+		tv->tv_sec = (long)(tmpres / 1000000UL);
+		tv->tv_usec = (long)(tmpres % 1000000UL);
+	}
+
+	if (NULL != tz)
+	{
+		if (!tzflag)
+		{
+			_tzset();
+			tzflag++;
+		}
+		tz->tz_minuteswest = _timezone / 60;
+		tz->tz_dsttime = _daylight;
+	}
+
+	return 0;
+}
+#elif
+#include <sys/time.h>
+#endif
+
+#ifdef _MSC_VER
+ //XXX windows (at least msvc) does not have pthreads
+#else
 static pthread_mutex_t memlock=PTHREAD_MUTEX_INITIALIZER;
+#endif
 static void **pointers=NULL;
 static long *insertlist=NULL; /* We can't embed this in the pointer list;
                           a pointer can have any value... */
@@ -49,7 +112,11 @@ static void *_insert(void *ptr,long bytes,char *file,long line){
   ((head *)ptr)->ptr=pinsert;
   ((head *)ptr)->bytes=bytes-HEAD_ALIGN;
 
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_lock(&memlock);
+#endif
   if(pinsert>=palloced){
     palloced+=64;
     if(pointers){
@@ -117,13 +184,21 @@ static void *_insert(void *ptr,long bytes,char *file,long line){
 
   global_bytes+=(bytes-HEAD_ALIGN);
 
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_unlock(&memlock);
-  return(ptr+HEAD_ALIGN);
+#endif
+  return(((uint8_t*)ptr)+HEAD_ALIGN);
 }
 
 static void _ripremove(void *ptr){
   int insert;
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_lock(&memlock);
+#endif
 
 #ifdef _VDBG_GRAPHFILE
   {
@@ -174,12 +249,20 @@ static void _ripremove(void *ptr){
   }
 
   pointers[insert]=NULL;
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_unlock(&memlock);
+#endif
 }
 
 void _VDBG_dump(void){
   int i;
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_lock(&memlock);
+#endif
   for(i=0;i<ptop;i++){
     head *ptr=pointers[i];
     if(ptr)
@@ -187,7 +270,11 @@ void _VDBG_dump(void){
               ptr->file,ptr->line);
   }
 
+#ifdef _MSC_VER
+  //XXX windows (at least msvc) does not have pthreads
+#else
   pthread_mutex_unlock(&memlock);
+#endif
 }
 
 void *_VDBG_malloc(void *ptr,long bytes,char *file,long line){
@@ -196,7 +283,7 @@ void *_VDBG_malloc(void *ptr,long bytes,char *file,long line){
 
   bytes+=HEAD_ALIGN;
   if(ptr){
-    ptr-=HEAD_ALIGN;
+    ptr = ((uint8_t*)ptr)-HEAD_ALIGN;
     _ripremove(ptr);
     ptr=realloc(ptr,bytes);
   }else{
@@ -208,7 +295,7 @@ void *_VDBG_malloc(void *ptr,long bytes,char *file,long line){
 
 void _VDBG_free(void *ptr,char *file,long line){
   if(ptr){
-    ptr-=HEAD_ALIGN;
+    ptr = ((uint8_t*)ptr)-HEAD_ALIGN;
     _ripremove(ptr);
     free(ptr);
   }

@@ -179,7 +179,7 @@ static_codebook *vorbis_staticbook_unpack(oggpack_buffer *opb){
         if(oggpack_read(opb,1)){
           long num=oggpack_read(opb,5);
           if(num==-1)goto _eofout;
-          s->lengthlist[i]=num+1;
+          s->lengthlist[i]=(char)(num+1);
         }else
           s->lengthlist[i]=0;
       }
@@ -188,7 +188,7 @@ static_codebook *vorbis_staticbook_unpack(oggpack_buffer *opb){
       for(i=0;i<s->entries;i++){
         long num=oggpack_read(opb,5);
         if(num==-1)goto _eofout;
-        s->lengthlist[i]=num+1;
+        s->lengthlist[i]=(char)(num+1);
       }
     }
 
@@ -210,7 +210,7 @@ static_codebook *vorbis_staticbook_unpack(oggpack_buffer *opb){
         }
         if(length>32)goto _errout;
         for(j=0;j<num;j++,i++)
-          s->lengthlist[i]=length;
+          s->lengthlist[i]=(char)length;
         length++;
       }
     }

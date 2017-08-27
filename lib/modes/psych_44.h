@@ -23,31 +23,31 @@ static const vorbis_info_psy_global _psy_global_44[5]={
    {20.f,14.f,12.f,12.f,12.f,12.f,12.f},
    {-60.f,-30.f,-40.f,-40.f,-40.f,-40.f,-40.f}, 2,-75.f,
    -6.f,
-   {99.},{{99.},{99.}},{0},{0},{{0.},{0.}}
+   { 99 },{ { 99 },{ 99 } },{ 0 },{ 0 },{ { 0 },{ 0 } }
   },
   {8,   /* lines per eighth octave */
    {14.f,10.f,10.f,10.f,10.f,10.f,10.f},
    {-40.f,-30.f,-25.f,-25.f,-25.f,-25.f,-25.f}, 2,-80.f,
    -6.f,
-   {99.},{{99.},{99.}},{0},{0},{{0.},{0.}}
+   {99},{{99},{99}},{0},{0},{{0},{0}}
   },
   {8,   /* lines per eighth octave */
    {12.f,10.f,10.f,10.f,10.f,10.f,10.f},
    {-20.f,-20.f,-15.f,-15.f,-15.f,-15.f,-15.f}, 0,-80.f,
    -6.f,
-   {99.},{{99.},{99.}},{0},{0},{{0.},{0.}}
+   {99},{{99},{99}},{0},{0},{{0},{0}}
   },
   {8,   /* lines per eighth octave */
    {10.f,8.f,8.f,8.f,8.f,8.f,8.f},
    {-20.f,-15.f,-12.f,-12.f,-12.f,-12.f,-12.f}, 0,-80.f,
    -6.f,
-   {99.},{{99.},{99.}},{0},{0},{{0.},{0.}}
+   {99},{{99},{99}},{0},{0},{{0},{0}}
   },
   {8,   /* lines per eighth octave */
    {10.f,6.f,6.f,6.f,6.f,6.f,6.f},
    {-15.f,-15.f,-12.f,-12.f,-12.f,-12.f,-12.f}, 0,-85.f,
    -6.f,
-   {99.},{{99.},{99.}},{0},{0},{{0.},{0.}}
+   {99},{{99},{99}},{0},{0},{{0},{0}}
   },
 };
 
@@ -608,9 +608,9 @@ static const att3 _psy_tone_masteratt_44[12]={
 };
 
 /* lowpass by mode **************/
-static const double _psy_lowpass_44[12]={
+static const FPTYPE _psy_lowpass_44[12]={
   /*  15.1,15.8,16.5,17.9,20.5,48.,999.,999.,999.,999.,999. */
-  13.9,15.1,15.8,16.5,17.2,18.9,20.1,48.,999.,999.,999.,999.
+  FPCONST(13.9),FPCONST(15.1),FPCONST(15.8),FPCONST(16.5),FPCONST(17.2),FPCONST(18.9),FPCONST(20.1),FPCONST(48.0),FPCONST(999.0),FPCONST(999.0),FPCONST(999.0),FPCONST(999.0)
 };
 
 /* noise normalization **********/
@@ -631,11 +631,11 @@ static const int _noise_part_long_44[11]={
     32,32,32,32,32,32,32,32,32,32,32
 };
 
-static const double _noise_thresh_44[11]={
+static const FPTYPE _noise_thresh_44[11]={
   /*  .2,.2,.3,.4,.5,.5,9999.,9999.,9999.,9999., */
-   .2,.2,.2,.4,.6,9999.,9999.,9999.,9999.,9999.,9999.,
+   FPCONST(.2),FPCONST(.2),FPCONST(.2),FPCONST(.4),FPCONST(.6),FPCONST(9999.0),FPCONST(9999.0),FPCONST(9999.0),FPCONST(9999.0),FPCONST(9999.0),FPCONST(9999.0),
 };
 
-static const double _noise_thresh_5only[2]={
- .5,.5,
+static const FPTYPE _noise_thresh_5only[2]={
+ FPCONST(.5),FPCONST(.5),
 };

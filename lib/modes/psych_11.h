@@ -14,7 +14,7 @@
 
  ********************************************************************/
 
-static const double _psy_lowpass_11[3]={4.5,5.5,30.,};
+static const FPTYPE _psy_lowpass_11[3]={FPCONST(4.5),FPCONST(5.5),FPCONST(30.0),};
 
 static const att3 _psy_tone_masteratt_11[3]={
   {{ 30,  25,  12},  0,   0},  /* 0 */
@@ -46,5 +46,5 @@ static const noise3 _psy_noisebias_11[3]={
     {-30,-30,-30,-30,-26,-26,-26,-26,-26,-26,-26,-26,-26,-24, 99, 99, 99}}},
 };
 
-static const double _noise_thresh_11[3]={ .3,.5,.5 };
+static const FPTYPE _noise_thresh_11[3]={ FPCONST(.3),FPCONST(.5),FPCONST(.5) };
 

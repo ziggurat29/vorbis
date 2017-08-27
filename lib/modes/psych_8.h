@@ -83,7 +83,7 @@ static const compandblock _psy_compand_8[2]={
   }},
 };
 
-static const double _psy_lowpass_8[3]={3.,4.,4.};
+static const FPTYPE _psy_lowpass_8[3]={FPCONST(3.0),FPCONST(4.0),FPCONST(4.0)};
 static const int _noise_start_8[2]={
   64,64,
 };
