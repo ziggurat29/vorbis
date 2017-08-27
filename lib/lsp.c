@@ -248,14 +248,14 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
                             float amp,float ampoffset){
   int i;
   float wdel=M_PI/ln;
-  for(i=0;i<m;i++)lsp[i]=FPCONST(2.)*FPFXN(cos)(lsp[i]);
+  for(i=0;i<m;i++)lsp[i]=2.f*cosf(lsp[i]);
 
   i=0;
   while(i<n){
     int j,k=map[i];
     float p=.5f;
     float q=.5f;
-    float w=FPCONST(2.)*FPFXN(cos)(wdel*k);
+    float w=2.f*cosf(wdel*k);
     for(j=1;j<m;j+=2){
       q *= w-lsp[j-1];
       p *= w-lsp[j];
@@ -272,7 +272,7 @@ void vorbis_lsp_to_curve(float *curve,int *map,int n,int ln,float *lsp,int m,
       q*=q*(2.f+w);
     }
 
-    q=fromdB(amp/FPFXN(sqrt)(p+q)-ampoffset);
+    q=(float)fromdB(amp/sqrtf(p+q)-ampoffset);
 
     curve[i]*=q;
     while(map[++i]==k)curve[i]*=q;
@@ -346,7 +346,7 @@ static int Laguerre_With_Deflation(float *a,int ord,float *r){
       if(FPFXN(fabs)(delta/new)<FPCONST(10e-12))break;
     }
 
-    r[m-1]=new;
+    r[m-1]=(float)new;
 
     /* forward deflation */
 
@@ -393,7 +393,7 @@ static int Newton_Raphson(float *a,int ord,float *r){
   /* Replaced the original bubble sort with a real sort.  With your
      help, we can eliminate the bubble sort in our lifetime. --Monty */
 
-  for(i=0; i<ord;i++) r[i] = root[i];
+  for(i=0; i<ord;i++) r[i] = (float)root[i];
   return(0);
 }
 
@@ -445,9 +445,9 @@ int vorbis_lpc_to_lsp(float *lpc,float *lsp,int m){
   qsort(g2r,g2_order,sizeof(*g2r),comp);
 
   for(i=0;i<g1_order;i++)
-    lsp[i*2] = FPFXN(acos)(g1r[i]);
+    lsp[i*2] = acosf(g1r[i]);
 
   for(i=0;i<g2_order;i++)
-    lsp[i*2+1] = FPFXN(acos)(g2r[i]);
+    lsp[i*2+1] = acosf(g2r[i]);
   return(0);
 }

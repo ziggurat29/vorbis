@@ -122,7 +122,7 @@ static void floor0_map_lazy_init(vorbis_block      *vb,
     /* we choose a scaling constant so that:
        floor(bark(rate/2-1)*C)=mapped-1
      floor(bark(rate/2)*C)=mapped */
-    float scale=look->ln/toBARK(info->rate/2.f);
+    float scale=(float)(look->ln/toBARK(info->rate/2.f));
 
     /* the mapping from a linear scale to a smaller bark scale is
        straightforward.  We do *not* make sure that the linear mapping
