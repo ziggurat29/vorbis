@@ -271,7 +271,7 @@ static int render_point(int x0,int x1,int y0,int y1,int x){
 }
 
 static int vorbis_dBquant(const float *x){
-  int i= *x*7.3142857f+1023.5f;
+  int i= (int)(*x*7.3142857f+1023.5f);
   if(i>1023)return(1023);
   if(i<0)return(0);
   return i;
@@ -455,13 +455,13 @@ static int accumulate_fit(const float *flr,const float *mdct,
 
 static int fit_line(lsfit_acc *a,int fits,int *y0,int *y1,
                     vorbis_info_floor1 *info){
-  double xb=0,yb=0,x2b=0,y2b=0,xyb=0,bn=0;
+  FPTYPE xb=0,yb=0,x2b=0,y2b=0,xyb=0,bn=0;
   int i;
   int x0=a[0].x0;
   int x1=a[fits-1].x1;
 
   for(i=0;i<fits;i++){
-    double weight = (a[i].bn+a[i].an)*info->twofitweight/(a[i].an+1)+1.;
+    FPTYPE weight = (a[i].bn+a[i].an)*info->twofitweight/(a[i].an+1)+FPCONST(1.0);
 
     xb+=a[i].xb + a[i].xa * weight;
     yb+=a[i].yb + a[i].ya * weight;
@@ -490,13 +490,13 @@ static int fit_line(lsfit_acc *a,int fits,int *y0,int *y1,
   }
 
   {
-    double denom=(bn*x2b-xb*xb);
+    FPTYPE denom=(bn*x2b-xb*xb);
 
     if(denom>0.){
-      double a=(yb*x2b-xyb*xb)/denom;
-      double b=(bn*xyb-xb*yb)/denom;
-      *y0=rint(a+b*x0);
-      *y1=rint(a+b*x1);
+      FPTYPE a=(yb*x2b-xyb*xb)/denom;
+      FPTYPE b=(bn*xyb-xb*yb)/denom;
+      *y0=(int)FPFXN(rint)(a+b*x0);
+      *y1=(int)FPFXN(rint)(a+b*x1);
 
       /* limit to our range! */
       if(*y0>1023)*y0=1023;

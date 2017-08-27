@@ -50,19 +50,19 @@ long _float32_pack(float val){
     sign=0x80000000;
     val= -val;
   }
-  exp= floor(log(val)/log(2.f)+.001); //+epsilon
-  mant=rint(ldexp(val,(VQ_FMAN-1)-exp));
+  exp= (long)floorf(logf(val)/logf(2.f)+.001f); //+epsilon
+  mant=(long)rintf(ldexpf(val,(VQ_FMAN-1)-exp));
   exp=(exp+VQ_FEXP_BIAS)<<VQ_FMAN;
 
   return(sign|exp|mant);
 }
 
 float _float32_unpack(long val){
-  double mant=val&0x1fffff;
+  float mant=(float)(val&0x1fffff);
   int    sign=val&0x80000000;
   long   exp =(val&0x7fe00000L)>>VQ_FMAN;
   if(sign)mant= -mant;
-  return(ldexp(mant,exp-(VQ_FMAN-1)-VQ_FEXP_BIAS));
+  return(ldexpf(mant,exp-(VQ_FMAN-1)-VQ_FEXP_BIAS));
 }
 
 /* given a list of word lengths, generate a list of codewords.  Works
@@ -162,7 +162,8 @@ long _book_maptype1_quantvals(const static_codebook *b){
   if(b->entries<1){
     return(0);
   }
-  vals=floor(pow((float)b->entries,1.f/b->dim));
+  //YYY think about this in the context of the assertion below; examine b->entries
+  vals=(long)floorf(powf((float)b->entries,1.f/b->dim));
 
   /* the above *should* be reliable, but we'll not assume that FP is
      ever reliable when bitstream sync is at stake; verify via integer
@@ -225,8 +226,8 @@ float *_book_unquantize(const static_codebook *b,int n,int *sparsemap){
           int indexdiv=1;
           for(k=0;k<b->dim;k++){
             int index= (j/indexdiv)%quantvals;
-            float val=b->quantlist[index];
-            val=fabs(val)*delta+mindel+last;
+            float val=(float)b->quantlist[index];
+            val=fabsf(val)*delta+mindel+last;
             if(b->q_sequencep)last=val;
             if(sparsemap)
               r[sparsemap[count]*b->dim+k]=val;
@@ -245,8 +246,8 @@ float *_book_unquantize(const static_codebook *b,int n,int *sparsemap){
           float last=0.f;
 
           for(k=0;k<b->dim;k++){
-            float val=b->quantlist[j*b->dim+k];
-            val=fabs(val)*delta+mindel+last;
+            float val=(float)b->quantlist[j*b->dim+k];
+            val=fabsf(val)*delta+mindel+last;
             if(b->q_sequencep)last=val;
             if(sparsemap)
               r[sparsemap[count]*b->dim+k]=val;

@@ -43,7 +43,7 @@ int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
      itself figure out what soft mode to use.  This allows easier
      bitrate management */
 
-  if((ret=_mapping_P[0]->forward(vb)))
+  if(0!=(ret=_mapping_P[0]->forward(vb)))
     return(ret);
 
   if(op){

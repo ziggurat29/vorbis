@@ -124,7 +124,13 @@ int main(){
 
    *********************************************************************/
 
-  ret=vorbis_encode_init_vbr(&vi,2,44100,0.1);
+  ret = vorbis_encode_init_vbr(&vi, 2, 32000, 0.1f);
+
+  //ret=vorbis_encode_init_vbr(&vi,2,44100,0.1);
+  //ret=vorbis_encode_init_vbr(&vi,2,44100,-0.1f);
+  //ret = vorbis_encode_init_vbr(&vi, 2, 44100, 1.0f);
+  //ret = vorbis_encode_init(&vi, 2, 44100, 128000, 128000, 128000);
+  //ret = vorbis_encode_init(&vi, 2, 44100, 64000, 64000, 64000);
 
   /* do not continue if setup failed; this can happen if we ask for a
      mode that libVorbis does not support (eg, too low a bitrate, etc,
@@ -143,7 +149,7 @@ int main(){
   /* set up our packet->stream encoder */
   /* pick a random serial number; that way we can more likely build
      chained streams just by concatenation */
-  srand(time(NULL));
+  srand((unsigned int)time(NULL));
   ogg_stream_init(&os,rand());
 
   /* Vorbis streams begin with three headers; the initial header (with

@@ -25,7 +25,7 @@ extern "C"
 #include <ogg/ogg.h>
 
 //XXX allow me to switch between precision types easily
-#define USE_DBL_PREC
+//#define USE_DBL_PREC
 #ifdef USE_DBL_PREC
 #define FPCONST(a) (a)
 #define FPTYPE double

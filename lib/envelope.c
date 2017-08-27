@@ -44,7 +44,7 @@ void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
   mdct_init(&e->mdct,n);
 
   for(i=0;i<n;i++){
-    e->mdct_win[i]=sin(i/(n-1.)*M_PI);
+    e->mdct_win[i]=FPFXN(sin)(i/(n-FPCONST(1.))*M_PI);
     e->mdct_win[i]*=e->mdct_win[i];
   }
 
@@ -61,10 +61,10 @@ void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
     n=e->band[j].end;
     e->band[j].window=_ogg_malloc(n*sizeof(*e->band[0].window));
     for(i=0;i<n;i++){
-      e->band[j].window[i]=sin((i+.5)/n*M_PI);
+      e->band[j].window[i]=FPFXN(sin)((i+FPCONST(.5))/n*M_PI);
       e->band[j].total+=e->band[j].window[i];
     }
-    e->band[j].total=1./e->band[j].total;
+    e->band[j].total=FPCONST(1.)/e->band[j].total;
   }
 
   e->filter=_ogg_calloc(VE_BANDS*ch,sizeof(*e->filter));
@@ -123,7 +123,7 @@ static int _ve_amp(envelope_lookup *ve,
   /* near-DC spreading function; this has nothing to do with
      psychoacoustics, just sidelobe leakage and window size */
   {
-    float temp=vec[0]*vec[0]+.7*vec[1]*vec[1]+.2*vec[2]*vec[2];
+    float temp=vec[0]*vec[0]+FPCONST(.7)*vec[1]*vec[1]+FPCONST(.2)*vec[2]*vec[2];
     int ptr=filters->nearptr;
 
     /* the accumulation is regularly refreshed from scratch to avoid
@@ -141,7 +141,7 @@ static int _ve_amp(envelope_lookup *ve,
     decay*=(1./(VE_NEARDC+1));
     filters->nearptr++;
     if(filters->nearptr>=VE_NEARDC)filters->nearptr=0;
-    decay=todB(&decay)*.5-15.f;
+    decay=todB(&decay)*FPCONST(.5)-FPCONST(15.);
   }
 
   /* perform spreading and limiting, also smooth the spectrum.  yes,

@@ -261,7 +261,7 @@ static int mapping0_forward(vorbis_block *vb){
     iwork[i]=_vorbis_block_alloc(vb,n/2*sizeof(**iwork));
     gmdct[i]=_vorbis_block_alloc(vb,n/2*sizeof(**gmdct));
 
-    scale_dB=todB(&scale) + .345; /* + .345 is a hack; the original
+    scale_dB=todB(&scale) + .345f; /* + .345 is a hack; the original
                                      todB estimation used on IEEE 754
                                      compliant machines had a bug that
                                      returned dB values about a third
@@ -307,7 +307,7 @@ static int mapping0_forward(vorbis_block *vb){
 
     /* FFT yields more accurate tonal estimation (not phase sensitive) */
     drft_forward(&b->fft_look[vb->W],pcm);
-    logfft[0]=scale_dB+todB(pcm)  + .345; /* + .345 is a hack; the
+    logfft[0]=scale_dB+todB(pcm)  + .345f; /* + .345 is a hack; the
                                      original todB estimation used on
                                      IEEE 754 compliant machines had a
                                      bug that returned dB values about
@@ -324,7 +324,7 @@ static int mapping0_forward(vorbis_block *vb){
     local_ampmax[i]=logfft[0];
     for(j=1;j<n-1;j+=2){
       float temp=pcm[j]*pcm[j]+pcm[j+1]*pcm[j+1];
-      temp=logfft[(j+1)>>1]=scale_dB+.5f*todB(&temp)  + .345; /* +
+      temp=logfft[(j+1)>>1]=scale_dB+.5f*todB(&temp)  + .345f; /* +
                                      .345 is a hack; the original todB
                                      estimation used on IEEE 754
                                      compliant machines had a bug that
@@ -382,7 +382,7 @@ static int mapping0_forward(vorbis_block *vb){
       memset(floor_posts[i],0,sizeof(**floor_posts)*PACKETBLOBS);
 
       for(j=0;j<n/2;j++)
-        logmdct[j]=todB(mdct+j)  + .345; /* + .345 is a hack; the original
+        logmdct[j]=todB(mdct+j)  + .345f; /* + .345 is a hack; the original
                                      todB estimation used on IEEE 754
                                      compliant machines had a bug that
                                      returned dB values about a third

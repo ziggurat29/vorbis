@@ -24,15 +24,15 @@
 
 /* interpolated lookup based cos function, domain 0 to PI only */
 float vorbis_coslook(float a){
-  double d=a*(.31830989*(float)COS_LOOKUP_SZ);
-  int i=vorbis_ftoi(d-.5);
+  float d=a*(.31830989f*(float)COS_LOOKUP_SZ);
+  int i=vorbis_ftoi(d-.5f);
 
   return COS_LOOKUP[i]+ (d-i)*(COS_LOOKUP[i+1]-COS_LOOKUP[i]);
 }
 
 /* interpolated 1./sqrt(p) where .5 <= p < 1. */
 float vorbis_invsqlook(float a){
-  double d=a*(2.f*(float)INVSQ_LOOKUP_SZ)-(float)INVSQ_LOOKUP_SZ;
+  float d=a*(2.f*(float)INVSQ_LOOKUP_SZ)-(float)INVSQ_LOOKUP_SZ;
   int i=vorbis_ftoi(d-.5f);
   return INVSQ_LOOKUP[i]+ (d-i)*(INVSQ_LOOKUP[i+1]-INVSQ_LOOKUP[i]);
 }

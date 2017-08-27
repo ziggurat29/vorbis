@@ -247,7 +247,7 @@ int main(){
                     float  *mono=pcm[i];
                     for(j=0;j<bout;j++){
 #if 1
-                      int val=floor(mono[j]*32767.f+.5f);
+                      int val=(int)floorf(mono[j]*32767.f+.5f);
 #else /* optional dither */
                       int val=mono[j]*32767.f+drand48()-0.5f;
 #endif
@@ -260,7 +260,7 @@ int main(){
                         val=-32768;
                         clipflag=1;
                       }
-                      *ptr=val;
+                      *ptr=(ogg_int16_t)val;
                       ptr+=vi.channels;
                     }
                   }
